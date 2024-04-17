@@ -1,6 +1,8 @@
 package com.ivan.securemovieapi.config;
 
+import com.ivan.securemovieapi.filters.JwtAuthFilter;
 import com.ivan.securemovieapi.services.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -9,10 +11,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class WebSecurityConfig {
 
+    @Autowired
+    private JwtAuthFilter authFilter;
     @Bean
     UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
@@ -34,8 +39,9 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.authenticationProvider(authenticationProvider());
-        http.authorizeHttpRequests(auth ->
+        http.csrf(csrf -> csrf.disable())
+        .authenticationProvider(authenticationProvider())
+        .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/users").authenticated()
                                 .anyRequest().permitAll()
                 )
@@ -44,8 +50,8 @@ public class WebSecurityConfig {
                                 .defaultSuccessUrl("/users")
                                 .permitAll()
                 )
-                .logout(logout -> logout.logoutSuccessUrl("/").permitAll()
-                );
+                .logout(logout -> logout.logoutSuccessUrl("/").permitAll())
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
