@@ -29,11 +29,24 @@ public class UserController {
     }
 
     @PostMapping("/process_register")
-    public String processRegistration(User user) {
+    public String processRegistration(User user, Model model) {
+        // Check if the email already exists
+        if (repo.findByEmail(user.getEmail()) != null) {
+            // Set the flag to indicate email exists
+            model.addAttribute("emailExists", true);
+            // Return the registration form again with the flag set
+            return "register_form";
+        }
+
+        // Encode the password
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+
+        // Save the user
         repo.save(user);
+
+        // Redirect to the registration success page
         return "register_success";
     }
 

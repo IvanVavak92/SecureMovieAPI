@@ -11,6 +11,9 @@
     <div>
         <h1>User Registration</h1>
     </div>
+    <div th:if="${emailExists}" class="alert alert-danger" role="alert">
+        Email is already registered.
+    </div>
     <form th:action="@{/process_register}" method="post"
           style="max-width: 600px; margin: 0 auto;"
           th:object="${user}">
