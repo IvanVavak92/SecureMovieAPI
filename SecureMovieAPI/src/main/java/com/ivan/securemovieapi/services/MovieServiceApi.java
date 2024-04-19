@@ -1,11 +1,13 @@
 package com.ivan.securemovieapi.services;
 
 import com.ivan.securemovieapi.dtos.MovieResponseDTO;
+import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
+@Component
 public interface MovieServiceApi {
 
     @GET("discover/movie")
