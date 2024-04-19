@@ -30,12 +30,12 @@ public class MovieService {
 
         // Make a request to the API to get popular movies
         Call<MovieResponseDTO> call = movieServiceApi.getPopularMovies(
-                "Bearer YOUR_API_KEY", // Replace with your API key
+                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNGVjNzY1YTZmZTY1OTVlM2M1NGMyNmIyYmM4NWE4OSIsInN1YiI6IjY1ZjA2OGQ3NDU1N2EwMDE4NTI5YzQxOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.O8cfOh3PTINjr8kSQEvGb9CXiuknfjn1AR0Up7r6vZM", // Replace with your API key
                 false,
                 false,
                 "en-US",
-                1, // Assuming you want the first page of results
-                "popularity.desc" // Sorting criteria
+                1,
+                "popularity.desc"
         );
 
         // Asynchronously execute the request
