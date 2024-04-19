@@ -1,6 +1,6 @@
 package com.ivan.securemovieapi.dtos;
 
-public class FilmDTO {
+public class MovieDTO {
 
     private String title;
     private String overview;
