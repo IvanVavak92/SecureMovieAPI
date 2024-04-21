@@ -1,5 +1,9 @@
 package com.ivan.securemovieapi.dtos;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
 public class MovieDTO {
 
     private String title;
@@ -8,7 +12,8 @@ public class MovieDTO {
     private double popularity;
     private double voteAverage;
     private int voteCount;
-    private String releaseDate;
+    @SerializedName("release_date")
+    private Date releaseDate;
 
     public String getTitle() {
         return title;
@@ -58,11 +63,11 @@ public class MovieDTO {
         this.voteCount = voteCount;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 }
