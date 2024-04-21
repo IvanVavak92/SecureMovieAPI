@@ -1,26 +1,39 @@
 package com.ivan.securemovieapi.controllers;
 
+import com.ivan.securemovieapi.models.Movie;
+import com.ivan.securemovieapi.services.MovieService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class MovieController {
+    private final MovieService movieService;
 
-    private final String API_KEY = "f2aa517f266d39db80bbb00158638f88";
-    private final String API_URL = "https://api.themoviedb.org/3/tv/top_rated";
+    private boolean queryTrigger = false;
 
-    @GetMapping("/getMovie")
-    public String getMovie() {
-        // Create a RestTemplate instance
-        RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
 
-        // Make the HTTP GET request with the provided URL and API key
-        String response = restTemplate.getForObject(API_URL + "?api_key=" + API_KEY, String.class);
+    @GetMapping("/search")
+    public String search(Model model) {
+        model.addAttribute("myMovies", movieService.getMyMovies());
+        model.addAttribute("queryTrigger", this.queryTrigger);
+        return "search";
+    }
 
-        // Return the response from the API
-        return response;
+    @GetMapping("/search-movie")
+    public String searchMovies(@RequestParam(required = false, defaultValue = "") String query, Model model) {
+        this.queryTrigger = true;
+        List<Movie> myMovies = movieService.findByTitle(query);
+        model.addAttribute("queryTrigger", this.queryTrigger);
+        model.addAttribute("myMovies", myMovies);
+        return "search";
     }
 }
