@@ -42,12 +42,12 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
         .authenticationProvider(authenticationProvider())
         .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/users").authenticated()
+                        auth.requestMatchers("/users", "/home", "/getMovies" ).authenticated()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(login ->
                         login.usernameParameter("email")
-                                .defaultSuccessUrl("/users")
+                                .defaultSuccessUrl("/home")
                                 .permitAll()
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/").permitAll())
